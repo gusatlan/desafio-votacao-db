@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  jackson:
+    date-format: yyyy-MM-dd'T'HH:mm:ssXXX
+    time-zone: America/Sao_Paulo
+  application:
+    name: votacao
+
+  data:
+    mongodb:
+      uri: "mongodb://${DB_USER:root}:${DB_PASSWORD:Ora1626X}@${DB_HOST:mongo}:${DB_PORT:27017}/${DB_NAME:votacao}"
+
+  # Kafka
+  kafka:
+    bootstrap-servers: "${KAFKA_BROKERS:kafka:9092}"
+    consumer:
+      group-id: "${spring.application.name}-group"
+      #auto-offset-reset: earliest
+      auto-offset-reset: latest
+    producer:
+      retries: 5
+      acks: all
