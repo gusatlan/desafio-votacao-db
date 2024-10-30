@@ -1,8 +1,15 @@
 package br.com.cooperativa.votacao.domain.persist
 
+import br.com.cooperativa.votacao.domain.dto.VoteType
 import br.com.cooperativa.votacao.util.fromJson
 import br.com.cooperativa.votacao.util.toJson
+import br.com.cooperativa.votacao.util.validateList
+import br.com.cooperativa.votacao.util.zonedNow
 import br.com.cooperativa.votacao.utils.buildAgenda
+import br.com.cooperativa.votacao.utils.buildVote
+import br.com.cooperativa.votacao.utils.buildVotes
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotEquals
@@ -46,4 +53,44 @@ class AgendaPersistTest {
         assertEquals(obj.endDate, unmarshall.endDate)
     }
 
+    @Test
+    fun `should be valid`() {
+        val obj = buildAgenda()
+
+        assertTrue(validateList(obj).isEmpty())
+    }
+
+    @Test
+    fun `should not be valid`() {
+        val obj = buildAgenda(id = "")
+
+        assertFalse(validateList(obj).isEmpty())
+    }
+
+    @Test
+    fun `should add vote`() {
+        val quantity = 2
+        val obj1 = buildAgenda(begin = zonedNow(), durationInSeconds = 300, votes = buildVotes(quantity))
+        val obj2 = AgendaPersist.addVote(obj1, buildVote())
+
+        assertEquals(obj1, obj2)
+        assertEquals(quantity, obj1.votes.size)
+        assertNotEquals(quantity, obj2.votes.size)
+    }
+
+    @Test
+    fun `should compute votes`() {
+        val quantity = 10
+        val obj = buildAgenda(votes = buildVotes(quantity))
+        val voteYes = obj.votes.stream().filter { it.vote == VoteType.YES }.count()
+        val voteNo = obj.votes.stream().filter { it.vote == VoteType.NO }.count()
+        val voteNull = obj.votes.stream().filter { it.vote == VoteType.NOT_SELECTED }.count()
+
+        assertEquals(0, voteNull)
+        assertEquals(quantity/2L, voteYes)
+        assertEquals(quantity/2L, voteNo)
+
+        assertEquals(voteYes, obj.summary[VoteType.YES]!!.toLong())
+        assertEquals(voteNo, obj.summary[VoteType.NO]!!.toLong())
+    }
 }
