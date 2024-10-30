@@ -33,7 +33,6 @@ class AgendaPersist(
     @Field("is_open")
     val isOpen = validOpen()
 
-
     private fun validOpen(baseDate: ZonedDateTime = zonedNow()): Boolean {
         return !baseDate.isAfter(endDate) && !baseDate.isBefore(beginDate)
     }
@@ -55,16 +54,18 @@ class AgendaPersist(
 
     companion object {
         fun build(
+            id: String? = null,
             topic: String,
             description: String,
             begin: ZonedDateTime = zonedNow(),
-            durationSeconds: Long
+            durationInSeconds: Long
         ): AgendaPersist {
             return AgendaPersist(
+                id = id ?: createId(),
                 topic = topic,
                 description = description,
                 beginDate = begin,
-                endDate = begin.plusSeconds(durationSeconds)
+                endDate = begin.plusSeconds(durationInSeconds)
             )
         }
     }
