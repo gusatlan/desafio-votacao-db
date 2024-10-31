@@ -4,15 +4,14 @@ import br.com.cooperativa.votacao.domain.dto.VoteType
 import br.com.cooperativa.votacao.domain.persist.AgendaPersist
 import br.com.cooperativa.votacao.domain.persist.VotePersist
 import br.com.cooperativa.votacao.util.createId
-import br.com.cooperativa.votacao.util.getDefaultZoneId
-import java.time.ZonedDateTime
+import java.time.LocalDateTime
 import kotlin.streams.asStream
 
 fun buildAgenda(
     id: String? = null,
     topic: String = "Topic",
     description: String = "Descriptio of Agenda",
-    begin: ZonedDateTime = ZonedDateTime.of(2024, 10, 30, 8, 29, 0, 0, getDefaultZoneId()),
+    begin: LocalDateTime = LocalDateTime.of(2024, 10, 30, 8, 29, 0, 0),
     durationInSeconds: Long = 60,
     votes: Set<VotePersist> = emptySet()
 ): AgendaPersist {

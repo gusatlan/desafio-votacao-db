@@ -3,19 +3,21 @@ package br.com.cooperativa.votacao.domain.persist
 import br.com.cooperativa.votacao.domain.dto.VoteType
 import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.createId
-import br.com.cooperativa.votacao.util.zonedNow
+import br.com.cooperativa.votacao.util.now
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.validation.constraints.NotEmpty
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.Transient
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
-import java.time.ZonedDateTime
+import java.time.LocalDateTime
 import java.util.stream.Collectors
 
 @Document(collection = "agenda")
 class AgendaPersist(
     id: String = createId(),
-    val beginDate: ZonedDateTime = zonedNow(),
-    val endDate: ZonedDateTime = zonedNow(),
+    val begin: LocalDateTime = now(),
+    val end: LocalDateTime = now(),
     topic: String = "",
     description: String = "",
     val votes: Set<VotePersist> = emptySet()
@@ -23,7 +25,7 @@ class AgendaPersist(
 
     @NotEmpty(message = "Id não pode ser vazio")
     @Id
-    val id = cleanCodeText(id)
+    var id = cleanCodeText(id)
 
     @NotEmpty(message = "Tópico da pauta não pode ser vazio")
     @Field("topic")
@@ -33,17 +35,19 @@ class AgendaPersist(
     @Field("description")
     val description = description.trim()
 
-    @Field("is_open")
+    @Transient
+    @JsonIgnore
     val isOpen = validOpen()
 
-    @Field("summary")
+    @Transient
+    @JsonIgnore
     val summary = aggregateVotes()
 
-    private fun validOpen(baseDate: ZonedDateTime = zonedNow()): Boolean {
-        return !baseDate.isAfter(endDate) && !baseDate.isBefore(beginDate)
+    private fun validOpen(baseDate: LocalDateTime = now()): Boolean {
+        return !baseDate.isAfter(end) && !baseDate.isBefore(begin)
     }
 
-    private fun aggregateVotes(): Map<VoteType, Int> {
+    private fun aggregateVotes(): Map<VoteType, Long> {
         return votes
             .stream()
             .filter { it.vote != VoteType.NOT_SELECTED }
@@ -51,7 +55,7 @@ class AgendaPersist(
                 it.vote to 1
             }
             .collect(
-                Collectors.groupingBy({ it.first }, Collectors.summingInt { it.second })
+                Collectors.groupingBy({ it.first }, Collectors.summingLong { it.second.toLong() })
             )
             .toMap()
     }
@@ -66,8 +70,8 @@ class AgendaPersist(
                "id": "$id",
                "topic": "$topic",
                "description": "$description",
-               "beginDate": "$beginDate",
-               "endDate": "$endDate"
+               "beginDate": "$begin",
+               "endDate": "$end"
             }
         """.trimIndent()
 
@@ -76,7 +80,7 @@ class AgendaPersist(
             id: String? = null,
             topic: String,
             description: String,
-            begin: ZonedDateTime = zonedNow(),
+            begin: LocalDateTime = now(),
             durationInSeconds: Long,
             votes: Set<VotePersist> = emptySet()
         ): AgendaPersist {
@@ -84,13 +88,13 @@ class AgendaPersist(
                 id = id ?: createId(),
                 topic = topic,
                 description = description,
-                beginDate = begin,
-                endDate = begin.plusSeconds(durationInSeconds),
+                begin = begin,
+                end = begin.plusSeconds(durationInSeconds),
                 votes = votes
             )
         }
 
-        fun addVote(agenda: AgendaPersist, vote: VotePersist, baseDate: ZonedDateTime = zonedNow()): AgendaPersist {
+        fun addVote(agenda: AgendaPersist, vote: VotePersist, baseDate: LocalDateTime = now()): AgendaPersist {
             return if (agenda.validOpen(baseDate) && !agenda.votes.contains(vote)) {
                 val votes = agenda.votes.toMutableSet()
 
@@ -100,8 +104,8 @@ class AgendaPersist(
                     id = agenda.id,
                     topic = agenda.topic,
                     description = agenda.description,
-                    beginDate = agenda.beginDate,
-                    endDate = agenda.endDate,
+                    begin = agenda.begin,
+                    end = agenda.end,
                     votes = votes
                 )
             } else {

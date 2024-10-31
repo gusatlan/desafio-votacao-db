@@ -61,14 +61,10 @@ fun cleanCode(text: String?): String {
 fun cleanCodeText(text: String?): String {
     return if (text != null) {
         val pattern = "\\W".toRegex()
-        pattern.replace(text.trim(), "").uppercase()
+        pattern.replace(text.trim(), "").lowercase()
     } else {
         ""
     }
-}
-
-fun clean(text: String?): String {
-    return text?.trim()?.lowercase() ?: ""
 }
 
 fun <T : Any> toJson(value: T, mapper: ObjectMapper = buildMapper()): String = mapper.writeValueAsString(value)

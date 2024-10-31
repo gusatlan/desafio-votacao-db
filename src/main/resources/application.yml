@@ -10,7 +10,11 @@ spring:
 
   data:
     mongodb:
-      uri: "mongodb://${DB_USER:root}:${DB_PASSWORD:Ora1626X}@${DB_HOST:mongo}:${DB_PORT:27017}/${DB_NAME:votacao}"
+      uri: "mongodb://${DB_USER:root}:${DB_PASSWORD:Ora1626X}@${DB_HOST:mongo.redent}:${DB_PORT:27017}"
+      authentication-database: "votacao"
+      database: "votacao"
+      auto-index-creation: true
+      repositories: true
 
   # Kafka
   kafka:

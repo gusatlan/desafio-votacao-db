@@ -2,9 +2,9 @@ package br.com.cooperativa.votacao.domain.persist
 
 import br.com.cooperativa.votacao.domain.dto.VoteType
 import br.com.cooperativa.votacao.util.fromJson
+import br.com.cooperativa.votacao.util.now
 import br.com.cooperativa.votacao.util.toJson
 import br.com.cooperativa.votacao.util.validateList
-import br.com.cooperativa.votacao.util.zonedNow
 import br.com.cooperativa.votacao.utils.buildAgenda
 import br.com.cooperativa.votacao.utils.buildVote
 import br.com.cooperativa.votacao.utils.buildVotes
@@ -39,7 +39,7 @@ class AgendaPersistTest {
         assertNotEquals(obj1.id, obj2.id)
         assertEquals(obj1.topic, obj2.topic)
         assertEquals(obj1.description, obj2.description)
-        assertNotEquals(obj1.beginDate, obj1.endDate)
+        assertNotEquals(obj1.begin, obj1.end)
     }
 
     @Test
@@ -49,8 +49,11 @@ class AgendaPersistTest {
         val unmarshall = fromJson(value = json, clazz = AgendaPersist::class.java)
 
         assertEquals(obj, unmarshall)
-        assertEquals(obj.beginDate, unmarshall.beginDate)
-        assertEquals(obj.endDate, unmarshall.endDate)
+        assertEquals(obj.begin, unmarshall.begin)
+        assertEquals(obj.end, unmarshall.end)
+
+        assertEquals(obj.begin, unmarshall.begin)
+        assertEquals(obj.end, unmarshall.end)
     }
 
     @Test
@@ -70,7 +73,7 @@ class AgendaPersistTest {
     @Test
     fun `should add vote`() {
         val quantity = 2
-        val obj1 = buildAgenda(begin = zonedNow(), durationInSeconds = 300, votes = buildVotes(quantity))
+        val obj1 = buildAgenda(begin = now(), durationInSeconds = 300, votes = buildVotes(quantity))
         val obj2 = AgendaPersist.addVote(obj1, buildVote())
 
         assertEquals(obj1, obj2)
@@ -87,8 +90,8 @@ class AgendaPersistTest {
         val voteNull = obj.votes.stream().filter { it.vote == VoteType.NOT_SELECTED }.count()
 
         assertEquals(0, voteNull)
-        assertEquals(quantity/2L, voteYes)
-        assertEquals(quantity/2L, voteNo)
+        assertEquals(quantity / 2L, voteYes)
+        assertEquals(quantity / 2L, voteNo)
 
         assertEquals(voteYes, obj.summary[VoteType.YES]!!.toLong())
         assertEquals(voteNo, obj.summary[VoteType.NO]!!.toLong())
