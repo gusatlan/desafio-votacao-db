@@ -19,6 +19,7 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Test
 import org.springframework.kafka.core.KafkaTemplate
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
 import reactor.kotlin.test.expectError
 import reactor.test.StepVerifier
 
@@ -137,23 +138,6 @@ class VoteServiceTest {
             .create(voteService.validateVoteAgenda(value = vote, agenda = agenda))
             .expectError<AlreadyVotedException>()
             .verify()
-    }
-
-//    @Test
-    fun `save vote must be not complete`() {
-        val agenda = buildAgenda(
-            begin = now(),
-            durationInSeconds = 300,
-            votes = setOf(buildVote(id = getValidCpf2(), vote = VoteType.YES))
-        )
-        val vote = buildVote(id = getValidCpf(), vote = VoteType.YES).transform(agendaId = agenda.id)
-
-        every { repository.findById(any<String>()) } returns Mono.empty()
-
-        StepVerifier
-            .create(voteService.save(vote))
-            .expectNext(agenda)
-            .verifyComplete()
     }
 
 }
