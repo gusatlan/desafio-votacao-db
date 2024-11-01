@@ -4,6 +4,7 @@ import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.now
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.validation.constraints.NotEmpty
+import org.hibernate.validator.constraints.br.CPF
 import java.time.LocalDateTime
 
 class VoteDTO(
@@ -14,6 +15,7 @@ class VoteDTO(
 ) {
 
     @NotEmpty(message = "Id não pode ser nula")
+    @CPF(message = "CPF inválido")
     val id = cleanCodeText(id)
 
     @NotEmpty(message = "Id da pauta não pode ser nula")

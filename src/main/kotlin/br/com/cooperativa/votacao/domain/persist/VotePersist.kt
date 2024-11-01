@@ -4,6 +4,7 @@ import br.com.cooperativa.votacao.domain.dto.VoteType
 import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.createId
 import br.com.cooperativa.votacao.util.now
+import org.hibernate.validator.constraints.br.CPF
 import org.springframework.data.annotation.Id
 import java.time.LocalDateTime
 
@@ -14,6 +15,7 @@ class VotePersist(
 ) {
 
     @Id
+    @CPF(message = "CPF inválido")
     val id = cleanCodeText(id)
 
     override fun equals(other: Any?) = other is VotePersist && id == other.id

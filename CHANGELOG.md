@@ -3,8 +3,10 @@
 * Criação das classes DTO: AgendaDTO, VoteDTO, SummaryAgendaDTO;
 * Correção das classes AgendaPersist e VotePersist, utilizando LocalDateTime;
 * Ajustes e criação de classes de testes unitários;
-* Adicionado script compile e compile.bat
-* 
+* Adicionado script compile, compile.bat, make, make.bat, run e run.bat
+* Testes unitários/integração para AgendaService;
+* Producer e Consumer para persistir AgendaDTO;
+* Adicionado validação @CPF para o id das classes VotePersist e VoteDTO; 
 
 ### 2024-10-30
 

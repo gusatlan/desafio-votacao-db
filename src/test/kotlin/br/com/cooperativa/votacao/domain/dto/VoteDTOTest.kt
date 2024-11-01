@@ -1,10 +1,12 @@
 package br.com.cooperativa.votacao.domain.dto
 
 import br.com.cooperativa.votacao.mapper.transform
+import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.fromJson
 import br.com.cooperativa.votacao.util.toJson
 import br.com.cooperativa.votacao.util.validate
 import br.com.cooperativa.votacao.utils.buildVote
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -36,14 +38,42 @@ class VoteDTOTest {
 
     @Test
     fun `should be valid`() {
-        assertTrue(validate(buildVote()).isEmpty())
+        assertTrue(validate(buildVote(id="070.680.938-68").transform(agendaId = "1")).isEmpty())
     }
 
     @Test
     fun `should be invalid`() {
         val obj = buildVote(id = "", vote = VoteType.NOT_SELECTED).transform(agendaId = "")
 
-        assertEquals(2, validate(obj).size)
+        assertEquals(3, validate(obj).size)
         assertFalse(obj.isValid())
     }
+
+    @Test
+    fun `should CPF be valid`() {
+        val cpf = "070.680.938-68"
+        val obj = buildVote(id = cpf).transform(agendaId = "1")
+
+        assertEquals(cleanCodeText(cpf), obj.id)
+        assertTrue(validate(obj).isEmpty())
+    }
+
+    @Test
+    fun `should CPF not be valid`() {
+        val cpf = "070.680.938-69"
+        val obj = buildVote(id = cpf).transform(agendaId = "1")
+
+        assertEquals(cleanCodeText(cpf), obj.id)
+        Assertions.assertFalse(validate(obj).isEmpty())
+    }
+
+    @Test
+    fun `should CPF not be valid with same digits`() {
+        val cpf = "111.111.111-11"
+        val obj = buildVote(id = cpf).transform(agendaId = "1")
+
+        assertEquals(cleanCodeText(cpf), obj.id)
+        Assertions.assertFalse(validate(obj).isEmpty())
+    }
+
 }

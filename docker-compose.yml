@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    image: votacao-img:latest
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_BROKERS: kafka:9092
+      DB_USER: "root"
+      DB_PASSWORD: "Ora1626X"
+      DB_HOST: "mongo"
+      DB_PORT: "27017"
+      DB_AUTH_NAME: "votacao"
+      DB_NAME: "votacao"

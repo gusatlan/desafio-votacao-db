@@ -16,7 +16,7 @@ open class AgendaDTO(
 ) {
 
     @NotEmpty(message = "Id da pauta não pode ser vazia")
-    val id = cleanCodeText(id)
+    val id = cleanCodeText(id).trim().lowercase()
 
     @NotEmpty(message = "Assunto da pauta não pode ser vazio")
     val topic = topic.trim()

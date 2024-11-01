@@ -11,8 +11,8 @@ spring:
   data:
     mongodb:
       uri: "mongodb://${DB_USER:root}:${DB_PASSWORD:Ora1626X}@${DB_HOST:mongo.redent}:${DB_PORT:27017}"
-      authentication-database: "votacao"
-      database: "votacao"
+      authentication-database: "${DB_AUTH_NAME:votacao}"
+      database: "${DB_NAME:votacao}"
       auto-index-creation: true
       repositories: true
 
@@ -21,8 +21,11 @@ spring:
     bootstrap-servers: "${KAFKA_BROKERS:kafka:9092}"
     consumer:
       group-id: "${spring.application.name}-group"
-      #auto-offset-reset: earliest
+#      auto-offset-reset: earliest
       auto-offset-reset: latest
     producer:
       retries: 5
       acks: all
+    admin:
+      properties:
+        replication.factor: 1

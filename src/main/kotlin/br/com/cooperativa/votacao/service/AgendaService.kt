@@ -1,9 +1,21 @@
 package br.com.cooperativa.votacao.service
 
+import br.com.cooperativa.votacao.domain.dto.AgendaDTO
 import br.com.cooperativa.votacao.domain.persist.AgendaPersist
+import br.com.cooperativa.votacao.exception.EntityFoundException
+import br.com.cooperativa.votacao.exception.ValidationException
+import br.com.cooperativa.votacao.mapper.transform
 import br.com.cooperativa.votacao.repository.AgendaRepository
+import br.com.cooperativa.votacao.util.KAFKA_GROUP_VOTACAO
+import br.com.cooperativa.votacao.util.KAFKA_TOPIC_AGENDA
 import br.com.cooperativa.votacao.util.buildMapper
+import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.createLogger
+import br.com.cooperativa.votacao.util.fromJson
+import br.com.cooperativa.votacao.util.toJson
+import br.com.cooperativa.votacao.util.validateList
+import org.springframework.kafka.annotation.KafkaListener
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -12,12 +24,23 @@ import reactor.kotlin.core.publisher.toMono
 
 @Service
 class AgendaService(
-    private val repository: AgendaRepository
+    private val repository: AgendaRepository,
+    private val kafkaTemplate: KafkaTemplate<String, String>
 ) {
 
     companion object {
         val logger = createLogger(this::class.java)
         val mapper = buildMapper()
+    }
+
+    fun send(value: AgendaDTO): Mono<AgendaDTO> {
+
+        return validatePersist(value)
+            .map {
+                val message = toJson(value)
+                kafkaTemplate.send(KAFKA_TOPIC_AGENDA, message)
+                it
+            }
     }
 
     private fun filter(
@@ -71,6 +94,37 @@ class AgendaService(
             }
     }
 
+    fun exists(id: String): Mono<Boolean> {
+        return repository.existsById(cleanCodeText(id))
+    }
+
+    fun validatePersist(value: AgendaDTO): Mono<AgendaDTO> {
+        return exists(id = value.id)
+            .map { exist ->
+                if (exist) {
+                    throw EntityFoundException(message = "Pauta já existe")
+                } else {
+                    val constraints = validateList(value)
+
+                    if (constraints.isNotEmpty()) {
+                        throw ValidationException(constraints = constraints)
+                    } else {
+                        value
+                    }
+                }
+            }
+    }
+
+    fun save(value: AgendaDTO): Mono<AgendaDTO> {
+        return validatePersist(value = value)
+            .doOnError {
+                logger.error("[AgendaService][save] [$value]", it)
+            }
+            .map(AgendaDTO::transform)
+            .flatMap(this::save)
+            .map(AgendaPersist::transform)
+    }
+
     fun save(value: AgendaPersist): Mono<AgendaPersist> {
         return value
             .toMono()
@@ -84,7 +138,23 @@ class AgendaService(
                 logger.info("[AgendaService][SAVED] [$it]")
             }
             .doOnError {
-                logger.error("[AgendaService][SAVE] [$value]", it)
+                logger.error("[AgendaService][SAVE][ERROR] [$value]", it)
             }
     }
+
+    @KafkaListener(topics = [KAFKA_TOPIC_AGENDA], groupId = KAFKA_GROUP_VOTACAO)
+    fun consumer(message: String?) {
+        message
+            ?.toMono()
+            ?.map {
+                fromJson(value = it, clazz = AgendaDTO::class.java, mapper = mapper)
+            }
+            ?.doOnNext {
+                logger.info("[AgendaService][consumer][RECEIVED] [$it]")
+            }
+            ?.flatMap(this::save)
+            ?.then()
+            ?.subscribe()
+    }
 }
+
