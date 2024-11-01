@@ -21,10 +21,10 @@ class CpfController {
             .toMono()
             .map(VoteAbleType::of)
             .map {
-                when(it) {
+                when (it) {
                     VoteAbleType.ABLE_TO_VOTE -> ResponseEntity.ok(it)
-                    VoteAbleType.UNABLE_TO_VOTE -> ResponseEntity.notFound()
-                } as ResponseEntity<VoteAbleType>?
+                    else -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(it)
+                }
             }
     }
 }

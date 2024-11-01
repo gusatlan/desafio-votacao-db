@@ -54,3 +54,8 @@ fun buildVotes(quantity: Int = 5): Set<VotePersist> {
         .toList()
         .toSet()
 }
+
+fun getValidCpf() = "070.680.938-68"
+
+fun getValidCpf2() = "58716208684"
+fun getInvalidCpf() = "070.680.938-69"

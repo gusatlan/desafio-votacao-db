@@ -1,6 +1,7 @@
 package br.com.cooperativa.votacao.domain.persist
 
 import br.com.cooperativa.votacao.domain.dto.VoteType
+import br.com.cooperativa.votacao.mapper.MESSAGE_VOTE_CPF
 import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.createId
 import br.com.cooperativa.votacao.util.now
@@ -15,7 +16,7 @@ class VotePersist(
 ) {
 
     @Id
-    @CPF(message = "CPF inválido")
+    @CPF(message = MESSAGE_VOTE_CPF)
     val id = cleanCodeText(id)
 
     override fun equals(other: Any?) = other is VotePersist && id == other.id

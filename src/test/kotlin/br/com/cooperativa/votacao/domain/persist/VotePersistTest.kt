@@ -6,6 +6,8 @@ import br.com.cooperativa.votacao.util.fromJson
 import br.com.cooperativa.votacao.util.toJson
 import br.com.cooperativa.votacao.util.validate
 import br.com.cooperativa.votacao.utils.buildVote
+import br.com.cooperativa.votacao.utils.getInvalidCpf
+import br.com.cooperativa.votacao.utils.getValidCpf
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
@@ -47,7 +49,7 @@ class VotePersistTest {
 
     @Test
     fun `should CPF be valid`() {
-        val cpf = "070.680.938-68"
+        val cpf = getValidCpf()
         val obj = buildVote(id = cpf)
 
         assertEquals(cleanCodeText(cpf), obj.id)
@@ -56,7 +58,7 @@ class VotePersistTest {
 
     @Test
     fun `should CPF not be valid`() {
-        val cpf = "070.680.938-69"
+        val cpf = getInvalidCpf()
         val obj = buildVote(id = cpf)
 
         assertEquals(cleanCodeText(cpf), obj.id)

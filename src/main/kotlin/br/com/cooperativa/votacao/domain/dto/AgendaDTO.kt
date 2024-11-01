@@ -1,5 +1,8 @@
 package br.com.cooperativa.votacao.domain.dto
 
+import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_DESCRIPTION
+import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_ID
+import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_TOPIC
 import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.createId
 import br.com.cooperativa.votacao.util.now
@@ -15,13 +18,13 @@ open class AgendaDTO(
     @field:Min(value = 10, message = "O tempo mínimo para votação é de 10 segundos") val durationInSeconds: Long = 60L
 ) {
 
-    @NotEmpty(message = "Id da pauta não pode ser vazia")
+    @NotEmpty(message = MESSAGE_AGENDA_ID)
     val id = cleanCodeText(id).trim().lowercase()
 
-    @NotEmpty(message = "Assunto da pauta não pode ser vazio")
+    @NotEmpty(message = MESSAGE_AGENDA_TOPIC)
     val topic = topic.trim()
 
-    @NotEmpty(message = "Descrição da pauta não pode ser vazia")
+    @NotEmpty(message = MESSAGE_AGENDA_DESCRIPTION)
     val description = description.trim()
 
     override fun equals(other: Any?) = other is AgendaDTO && id == other.id

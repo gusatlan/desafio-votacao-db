@@ -91,3 +91,17 @@ fun <T : Any> createLogger(clazz: Class<T>? = null): Logger {
 }
 
 fun createLogger(): Logger = createLogger(object {}::class.java)
+
+fun String.toBool(): Boolean? {
+    val value = this.trim().lowercase()
+    val trues = listOf("sim", "s", "true", "t", "yes", "y", "verdadeiro", "v")
+    val falses = listOf("não", "nao", "no", "n", "false", "f", "falso", "f")
+
+    return if (trues.contains(value)) {
+        true
+    } else if (falses.contains(value)) {
+        false
+    } else {
+        null
+    }
+}

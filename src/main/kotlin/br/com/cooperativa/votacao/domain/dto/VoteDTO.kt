@@ -1,5 +1,8 @@
 package br.com.cooperativa.votacao.domain.dto
 
+import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_ID
+import br.com.cooperativa.votacao.mapper.MESSAGE_VOTE_CPF
+import br.com.cooperativa.votacao.mapper.MESSAGE_VOTE_ID
 import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.now
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -10,19 +13,19 @@ import java.time.LocalDateTime
 class VoteDTO(
     id: String = "",
     agendaId: String = "",
-    val vote: VoteType = VoteType.NOT_SELECTED,
+    val vote: String = VoteType.NOT_SELECTED.description,
     val createdAt: LocalDateTime = now()
 ) {
 
-    @NotEmpty(message = "Id não pode ser nula")
-    @CPF(message = "CPF inválido")
+    @NotEmpty(message = MESSAGE_VOTE_ID)
+    @CPF(message = MESSAGE_VOTE_CPF)
     val id = cleanCodeText(id)
 
-    @NotEmpty(message = "Id da pauta não pode ser nula")
+    @NotEmpty(message = MESSAGE_AGENDA_ID)
     val agendaId = cleanCodeText(agendaId)
 
     @JsonIgnore
-    fun isValid() = id.isNotEmpty() && agendaId.isNotEmpty() && vote != VoteType.NOT_SELECTED
+    fun isValid() = id.isNotEmpty() && agendaId.isNotEmpty() && VoteType.ofDescription(vote) != VoteType.NOT_SELECTED
 
     override fun equals(other: Any?) = other is VoteDTO && agendaId == other.agendaId && id == other.id
 

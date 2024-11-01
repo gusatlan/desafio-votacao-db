@@ -6,6 +6,8 @@ import br.com.cooperativa.votacao.util.fromJson
 import br.com.cooperativa.votacao.util.toJson
 import br.com.cooperativa.votacao.util.validate
 import br.com.cooperativa.votacao.utils.buildVote
+import br.com.cooperativa.votacao.utils.getInvalidCpf
+import br.com.cooperativa.votacao.utils.getValidCpf
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
@@ -20,7 +22,7 @@ class VoteDTOTest {
         val dto = persist.transform(agendaId = "1")
 
         assertEquals(persist.id, dto.id)
-        assertEquals(persist.vote, dto.vote)
+        assertEquals(persist.vote, VoteType.ofDescription(dto.vote))
         assertEquals(persist.createdAt, dto.createdAt)
     }
 
@@ -38,7 +40,7 @@ class VoteDTOTest {
 
     @Test
     fun `should be valid`() {
-        assertTrue(validate(buildVote(id="070.680.938-68").transform(agendaId = "1")).isEmpty())
+        assertTrue(validate(buildVote(id= getValidCpf()).transform(agendaId = "1")).isEmpty())
     }
 
     @Test
@@ -51,7 +53,7 @@ class VoteDTOTest {
 
     @Test
     fun `should CPF be valid`() {
-        val cpf = "070.680.938-68"
+        val cpf = getValidCpf()
         val obj = buildVote(id = cpf).transform(agendaId = "1")
 
         assertEquals(cleanCodeText(cpf), obj.id)
@@ -60,7 +62,7 @@ class VoteDTOTest {
 
     @Test
     fun `should CPF not be valid`() {
-        val cpf = "070.680.938-69"
+        val cpf = getInvalidCpf()
         val obj = buildVote(id = cpf).transform(agendaId = "1")
 
         assertEquals(cleanCodeText(cpf), obj.id)

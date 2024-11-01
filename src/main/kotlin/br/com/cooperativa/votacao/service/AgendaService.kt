@@ -37,10 +37,12 @@ class AgendaService(
 
         return validatePersist(value)
             .map {
-                val message = toJson(value)
-                kafkaTemplate.send(KAFKA_TOPIC_AGENDA, message)
+                kafkaTemplate.send(KAFKA_TOPIC_AGENDA, toJson(value))
                 it
             }
+            .map(AgendaDTO::transform)
+            .flatMap(this::save)
+            .map(AgendaPersist::transform)
     }
 
     private fun filter(

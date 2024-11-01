@@ -3,6 +3,7 @@ package br.com.cooperativa.votacao.mapper
 import br.com.cooperativa.votacao.domain.dto.AgendaDTO
 import br.com.cooperativa.votacao.domain.dto.SummaryAgendaDTO
 import br.com.cooperativa.votacao.domain.dto.VoteDTO
+import br.com.cooperativa.votacao.domain.dto.VoteType
 import br.com.cooperativa.votacao.domain.persist.AgendaPersist
 import br.com.cooperativa.votacao.domain.persist.VotePersist
 import br.com.cooperativa.votacao.util.duration
@@ -42,7 +43,7 @@ fun VotePersist.transform(agendaId: String): VoteDTO {
     return VoteDTO(
         id = this.id,
         agendaId = agendaId,
-        vote = this.vote,
+        vote = this.vote.description,
         createdAt = this.createdAt
     )
 }
@@ -50,7 +51,7 @@ fun VotePersist.transform(agendaId: String): VoteDTO {
 fun VoteDTO.transform(): VotePersist {
     return VotePersist(
         id = this.id,
-        vote = this.vote,
+        vote = VoteType.ofDescription(this.vote),
         createdAt = this.createdAt
     )
 }

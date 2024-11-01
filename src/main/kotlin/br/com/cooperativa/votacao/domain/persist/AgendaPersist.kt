@@ -1,8 +1,12 @@
 package br.com.cooperativa.votacao.domain.persist
 
 import br.com.cooperativa.votacao.domain.dto.VoteType
+import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_DESCRIPTION
+import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_ID
+import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_TOPIC
 import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.createId
+import br.com.cooperativa.votacao.util.getDefaultZoneId
 import br.com.cooperativa.votacao.util.now
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.validation.constraints.NotEmpty
@@ -11,6 +15,7 @@ import org.springframework.data.annotation.Transient
 import org.springframework.data.mongodb.core.mapping.Document
 import org.springframework.data.mongodb.core.mapping.Field
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.util.stream.Collectors
 
 @Document(collection = "agenda")
@@ -23,15 +28,15 @@ class AgendaPersist(
     val votes: Set<VotePersist> = emptySet()
 ) {
 
-    @NotEmpty(message = "Id não pode ser vazio")
+    @NotEmpty(message = MESSAGE_AGENDA_ID)
     @Id
     var id = cleanCodeText(id)
 
-    @NotEmpty(message = "Tópico da pauta não pode ser vazio")
+    @NotEmpty(message = MESSAGE_AGENDA_TOPIC)
     @Field("topic")
     val topic = topic.trim()
 
-    @NotEmpty(message = "Descrição da pauta não pode ser vazia")
+    @NotEmpty(message = MESSAGE_AGENDA_DESCRIPTION)
     @Field("description")
     val description = description.trim()
 
@@ -44,7 +49,11 @@ class AgendaPersist(
     val summary = aggregateVotes()
 
     private fun validOpen(baseDate: LocalDateTime = now()): Boolean {
-        return !baseDate.isAfter(end) && !baseDate.isBefore(begin)
+        val base = baseDate.atZone(ZoneId.of("UTC"))
+        val beginDate = begin.atZone(ZoneId.of("UTC"))
+        val endDate = end.atZone(ZoneId.of("UTC"))
+
+        return !base.isAfter(endDate) && !base.isBefore(beginDate)
     }
 
     private fun aggregateVotes(): Map<VoteType, Long> {

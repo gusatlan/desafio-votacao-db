@@ -1,3 +1,5 @@
 package br.com.cooperativa.votacao.exception
 
-open class ApplicationException(message: String = "Erro na aplicação") : Exception(message)
+import br.com.cooperativa.votacao.mapper.MESSAGE_APPLICATION_ERROR
+
+open class ApplicationException(message: String = MESSAGE_APPLICATION_ERROR) : Exception(message)

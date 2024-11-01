@@ -1,3 +1,11 @@
+### 2024-11-01
+
+* Criado CpfClient;
+* Criado testes para CpfController e CpfClient;
+* Criado teste unitário para VoteType;
+* Criado VoteController, VoteService e VoteServiceTest;
+* Implementado persistência com Kafka no VoteService;
+
 ### 2024-10-31
 
 * Criação das classes DTO: AgendaDTO, VoteDTO, SummaryAgendaDTO;
@@ -6,7 +14,8 @@
 * Adicionado script compile, compile.bat, make, make.bat, run e run.bat
 * Testes unitários/integração para AgendaService;
 * Producer e Consumer para persistir AgendaDTO;
-* Adicionado validação @CPF para o id das classes VotePersist e VoteDTO; 
+* Adicionado validação @CPF para o id das classes VotePersist e VoteDTO;
+* Criado CpfController;
 
 ### 2024-10-30
 

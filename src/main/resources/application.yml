@@ -1,6 +1,11 @@
 server:
   port: 8080
 
+
+cpf:
+  baseUrl: "http://localhost:${server.port}"
+  endpoint: "/cpf/{cpf}"
+
 spring:
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ssXXX
