@@ -40,9 +40,6 @@ class AgendaService(
                 kafkaTemplate.send(KAFKA_TOPIC_AGENDA, toJson(value))
                 it
             }
-            .map(AgendaDTO::transform)
-            .flatMap(this::save)
-            .map(AgendaPersist::transform)
     }
 
     private fun filter(

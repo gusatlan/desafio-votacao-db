@@ -17,16 +17,4 @@ fun zonedNow(): ZonedDateTime = ZonedDateTime.now(getDefaultZoneId())
 
 fun now(): LocalDateTime = zonedNow().toLocalDateTime()
 
-fun LocalDateTime.duration(other: LocalDateTime) = Duration.between(this, other)
-
-fun ZonedDateTime.duration(other: ZonedDateTime) = Duration.between(this, other)
-
-fun LocalDateTime.toZonedDateTime(zoneId: ZoneId = getDefaultZoneId()): ZonedDateTime = this.atZone(zoneId)
-
-fun ZonedDateTime.toZonedDateTimeString() = this.format(formatterZonedDateTime)
-
-fun String.toZonedDateTime(): ZonedDateTime = ZonedDateTime.parse(this, formatterZonedDateTime)
-
-fun Instant.toZonedDateTime(zoneId: ZoneId = getDefaultZoneId()): ZonedDateTime = this.atZone(zoneId)
-
-fun Instant.toLocalDateTime(zoneId: ZoneId = getDefaultZoneId()): LocalDateTime = this.atZone(zoneId).toLocalDateTime()
+fun LocalDateTime.duration(other: LocalDateTime): Duration = Duration.between(this, other)

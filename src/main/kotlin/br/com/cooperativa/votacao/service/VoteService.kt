@@ -56,7 +56,7 @@ class VoteService(
             .map {
                 val constraints = validateList(value).toMutableList()
 
-                if(VoteType.ofDescription(it.vote) == VoteType.NOT_SELECTED) {
+                if (VoteType.ofDescription(it.vote) == VoteType.NOT_SELECTED) {
                     constraints.add(MESSAGE_VOTE_NOT_SELECTED)
                 }
 
@@ -99,7 +99,7 @@ class VoteService(
             }
     }
 
-    fun save(value: VoteDTO): Mono<AgendaPersist> {
+    fun validate(value: VoteDTO): Mono<Pair<VoteDTO, AgendaPersist>> {
         return validateCpf(value)
             .flatMap(this::validateVote)
             .flatMap { vote ->
@@ -111,16 +111,25 @@ class VoteService(
                         logger.error("[VoteService][save][ERROR] [$value]", it)
                     }
                     .collectList()
-                    .map { agendas -> agendas.stream().findFirst().get() }
-                    .flatMap { agenda ->
-                        validateVoteAgenda(vote, agenda)
-                            .map { voteValid ->
-                                AgendaPersist.addVote(
-                                    agenda=agenda,
-                                    vote = voteValid.transform()
-                                )
-                            }
+                    .map { agendas ->
+                        agendas.stream().findFirst().get()
                     }
+            }
+            .flatMap { agenda ->
+                validateVoteAgenda(value = value, agenda = agenda)
+                    .map { voteValid ->
+                        voteValid to agenda
+                    }
+            }
+    }
+
+    fun save(value: VoteDTO): Mono<AgendaPersist> {
+        return validate(value)
+            .map { tuple ->
+                AgendaPersist.addVote(
+                    agenda = tuple.second,
+                    vote = tuple.first.transform()
+                )
             }
             .flatMap(agendaService::save)
             .doOnNext {
@@ -129,6 +138,12 @@ class VoteService(
     }
 
     fun send(value: VoteDTO): Mono<VoteDTO> {
+//        return validatePersist(value)
+//            .map {
+//                kafkaTemplate.send(KAFKA_TOPIC_AGENDA, toJson(value))
+//                it
+//            }
+
         return save(value)
             .thenReturn(value)
     }
