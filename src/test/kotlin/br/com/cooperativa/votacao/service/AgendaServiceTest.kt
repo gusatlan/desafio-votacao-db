@@ -152,7 +152,7 @@ class AgendaServiceTest {
 
     @Test
     fun `should not valid save AgendaDTO`() {
-        val obj = buildAgenda(id="", topic="", description = "")
+        val obj = buildAgenda(id = "", topic = "", description = "")
 
         every { repository.existsById(any<String>()) } returns Mono.just(false)
         every { repository.save(any()) } returns Mono.just(obj)
@@ -162,7 +162,6 @@ class AgendaServiceTest {
             .expectError<ValidationException>()
             .verify()
     }
-
 
     @Test
     fun `should not consume`() {

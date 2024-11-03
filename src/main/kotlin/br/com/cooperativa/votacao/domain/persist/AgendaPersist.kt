@@ -6,7 +6,6 @@ import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_ID
 import br.com.cooperativa.votacao.mapper.MESSAGE_AGENDA_TOPIC
 import br.com.cooperativa.votacao.util.cleanCodeText
 import br.com.cooperativa.votacao.util.createId
-import br.com.cooperativa.votacao.util.getDefaultZoneId
 import br.com.cooperativa.votacao.util.now
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.validation.constraints.NotEmpty

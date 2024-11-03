@@ -32,6 +32,3 @@ spring:
     producer:
       retries: 5
       acks: all
-    admin:
-      properties:
-        topic.replication.factor: 1

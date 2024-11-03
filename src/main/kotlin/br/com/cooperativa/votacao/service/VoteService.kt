@@ -1,7 +1,6 @@
 package br.com.cooperativa.votacao.service
 
 import br.com.cooperativa.votacao.client.CpfClient
-import br.com.cooperativa.votacao.domain.dto.AgendaDTO
 import br.com.cooperativa.votacao.domain.dto.VoteDTO
 import br.com.cooperativa.votacao.domain.dto.VoteType
 import br.com.cooperativa.votacao.domain.persist.AgendaPersist
@@ -14,7 +13,6 @@ import br.com.cooperativa.votacao.mapper.MESSAGE_VOTE_CPF
 import br.com.cooperativa.votacao.mapper.MESSAGE_VOTE_NOT_SELECTED
 import br.com.cooperativa.votacao.mapper.transform
 import br.com.cooperativa.votacao.util.KAFKA_GROUP_VOTACAO
-import br.com.cooperativa.votacao.util.KAFKA_TOPIC_AGENDA
 import br.com.cooperativa.votacao.util.KAFKA_TOPIC_VOTE
 import br.com.cooperativa.votacao.util.buildMapper
 import br.com.cooperativa.votacao.util.createLogger

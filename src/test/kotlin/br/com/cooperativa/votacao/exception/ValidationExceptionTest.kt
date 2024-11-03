@@ -9,7 +9,7 @@ class ValidationExceptionTest {
 
     @Test
     fun `should build exception`() {
-        val obj = buildAgenda(id="", topic="", description = "")
+        val obj = buildAgenda(id = "", topic = "", description = "")
         val constrains = validateList(obj)
         val ex = ValidationException(constraints = constrains)
         val expectedErrorMessage = constrains.joinToString()

@@ -64,7 +64,7 @@ fun validateCpf(text: String): Boolean {
     return valid
 }
 
-fun <T: Any> validate(obj: T): Collection<ConstraintViolation<T>> {
+fun <T : Any> validate(obj: T): Collection<ConstraintViolation<T>> {
     return try {
         Validation.buildDefaultValidatorFactory().use {
             logger.info("validate() validating $obj")
@@ -72,13 +72,13 @@ fun <T: Any> validate(obj: T): Collection<ConstraintViolation<T>> {
                 logger.info("validate(): validated $obj with violations: [${violations.joinToString()}]")
             }
         }
-    } catch (e:Exception) {
+    } catch (e: Exception) {
         logger.error("validate(): Error on validate", e)
         throw e
     }
 }
 
-fun <T: Any> validateList(obj: T): Collection<String> {
+fun <T : Any> validateList(obj: T): Collection<String> {
     return validate(obj)
         .stream()
         .map {

@@ -1,7 +1,6 @@
 package br.com.cooperativa.votacao.client
 
 import br.com.cooperativa.votacao.controller.CpfController
-import br.com.cooperativa.votacao.domain.dto.VoteAbleType
 import br.com.cooperativa.votacao.util.cleanCodeText
 import io.mockk.mockk
 import org.junit.jupiter.api.Test
@@ -17,7 +16,6 @@ class CpfClientTest {
 
     @Autowired
     private lateinit var webTestClient: WebTestClient
-
 
     private val controller = mockk<CpfController>(relaxed = true)
     private val client = CpfClient(baseUrl = "http://localhost:8080", endpoint = "/cpf/{cpf}")

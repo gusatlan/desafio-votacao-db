@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.type.CollectionType
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.ser.ZonedDateTimeSerializer
 import org.slf4j.Logger
@@ -71,14 +70,6 @@ fun <T : Any> toJson(value: T, mapper: ObjectMapper = buildMapper()): String = m
 
 fun <T : Any> fromJson(value: String, clazz: Class<T>, mapper: ObjectMapper = buildMapper()): T =
     mapper.readValue(value, clazz)
-
-fun <T : Any> fromJsonList(value: String, clazz: Class<T>, mapper: ObjectMapper = buildMapper()): ArrayList<T> {
-    val listType: CollectionType = mapper.typeFactory.constructCollectionType(
-        ArrayList::class.java, clazz
-    )
-    val items: ArrayList<T> = mapper.readValue(value, listType)
-    return items
-}
 
 fun createId() = cleanCodeText(UUID.randomUUID().toString().trim().lowercase())
 

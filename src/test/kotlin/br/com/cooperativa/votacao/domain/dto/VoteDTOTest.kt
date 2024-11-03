@@ -40,7 +40,7 @@ class VoteDTOTest {
 
     @Test
     fun `should be valid`() {
-        assertTrue(validate(buildVote(id= getValidCpf()).transform(agendaId = "1")).isEmpty())
+        assertTrue(validate(buildVote(id = getValidCpf()).transform(agendaId = "1")).isEmpty())
     }
 
     @Test
