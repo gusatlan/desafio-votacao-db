@@ -15,7 +15,7 @@ open class AgendaDTO(
     topic: String = "",
     description: String = "",
     val begin: LocalDateTime = now(),
-    @field:Min(value = 10, message = "O tempo mínimo para votação é de 10 segundos") val durationInSeconds: Long = 60L
+    @field:Min(value = 60, message = "O tempo mínimo para votação é de 10 segundos") val durationInSeconds: Long = 60L
 ) {
 
     @NotEmpty(message = MESSAGE_AGENDA_ID)

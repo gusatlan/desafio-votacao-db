@@ -1,3 +1,11 @@
+### 2024-11-03
+
+* Documentação em MANUAL.md;
+* Criação do docker-compose.yml;
+* Ajustes no application.yml;
+* Criação do endpoint GET /agenda?;
+* Conversão no SummaryAgendaDTO de "YES"/"NO" para "Sim" e "Não";
+
 ### 2024-11-01
 
 * Criado CpfClient;

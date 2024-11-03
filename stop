@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Terminando a aplicação"
+docker-compose down > /dev/null
+docker compose down > /dev/null
+
