@@ -1,6 +1,8 @@
 package br.com.cooperativa.votacao.controller
 
+import br.com.cooperativa.votacao.domain.dto.VoteAbleStatus
 import br.com.cooperativa.votacao.domain.dto.VoteAbleType
+import br.com.cooperativa.votacao.mapper.transform
 import br.com.cooperativa.votacao.util.validateCpf
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,14 +18,14 @@ class CpfController {
     @GetMapping("/cpf/{cpf}")
     fun valid(
         @PathVariable(value = "cpf", required = true) cpf: String
-    ): Mono<ResponseEntity<VoteAbleType>> {
+    ): Mono<ResponseEntity<VoteAbleStatus>> {
         return validateCpf(text = cpf)
             .toMono()
             .map(VoteAbleType::of)
             .map {
                 when (it) {
-                    VoteAbleType.ABLE_TO_VOTE -> ResponseEntity.ok(it)
-                    else -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(it)
+                    VoteAbleType.ABLE_TO_VOTE -> ResponseEntity.ok(it.transform())
+                    else -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(it.transform())
                 }
             }
     }

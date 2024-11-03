@@ -1,6 +1,8 @@
 package br.com.cooperativa.votacao.controller
 
+import br.com.cooperativa.votacao.domain.dto.VoteAbleStatus
 import br.com.cooperativa.votacao.domain.dto.VoteAbleType
+import br.com.cooperativa.votacao.mapper.transform
 import br.com.cooperativa.votacao.util.cleanCodeText
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -27,13 +29,13 @@ class CpfControllerTest {
             .uri("/cpf/$cpf")
             .exchange()
             .expectStatus().isOk
-            .expectBody<VoteAbleType>()
+            .expectBody<VoteAbleStatus>()
             .consumeWith { response ->
                 val responseBody = response.responseBody
                 assertNotNull(responseBody)
-                assertEquals(VoteAbleType.ABLE_TO_VOTE, responseBody)
+                assertEquals(VoteAbleType.ABLE_TO_VOTE.transform(), responseBody)
                 if (responseBody != null) {
-                    assertTrue(responseBody.value)
+                    assertTrue(responseBody.status.value)
                 }
             }
     }
@@ -44,13 +46,13 @@ class CpfControllerTest {
             .uri("/cpf/11111111111")
             .exchange()
             .expectStatus().isNotFound
-            .expectBody<VoteAbleType>()
+            .expectBody<VoteAbleStatus>()
             .consumeWith { response ->
                 val responseBody = response.responseBody
 
                 assertNotNull(responseBody)
-                assertEquals(VoteAbleType.UNABLE_TO_VOTE, responseBody)
-                assertFalse(responseBody!!.value)
+                assertEquals(VoteAbleType.UNABLE_TO_VOTE.transform(), responseBody)
+                assertFalse(responseBody!!.status.value)
             }
     }
 }

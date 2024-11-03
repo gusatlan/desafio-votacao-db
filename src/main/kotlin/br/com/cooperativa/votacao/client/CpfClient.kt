@@ -1,6 +1,8 @@
 package br.com.cooperativa.votacao.client
 
+import br.com.cooperativa.votacao.domain.dto.VoteAbleStatus
 import br.com.cooperativa.votacao.domain.dto.VoteAbleType
+import br.com.cooperativa.votacao.mapper.transform
 import br.com.cooperativa.votacao.util.createLogger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.cache.annotation.Caching
@@ -43,7 +45,8 @@ class CpfClient(
             .onStatus({ status -> status.is5xxServerError }) { response ->
                 handleError(response)
             }
-            .bodyToMono(VoteAbleType::class.java)
+            .bodyToMono(VoteAbleStatus::class.java)
+            .map(VoteAbleStatus::transform)
             .map(VoteAbleType::value)
             .doOnNext {
                 logger.info("[CpfClient][verifyCpf][VERIFY] [$cpf, $it]")

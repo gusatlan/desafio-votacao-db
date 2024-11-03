@@ -2,6 +2,8 @@ package br.com.cooperativa.votacao.mapper
 
 import br.com.cooperativa.votacao.domain.dto.AgendaDTO
 import br.com.cooperativa.votacao.domain.dto.SummaryAgendaDTO
+import br.com.cooperativa.votacao.domain.dto.VoteAbleStatus
+import br.com.cooperativa.votacao.domain.dto.VoteAbleType
 import br.com.cooperativa.votacao.domain.dto.VoteDTO
 import br.com.cooperativa.votacao.domain.dto.VoteType
 import br.com.cooperativa.votacao.domain.persist.AgendaPersist
@@ -55,3 +57,7 @@ fun VoteDTO.transform(): VotePersist {
         createdAt = this.createdAt
     )
 }
+
+fun VoteAbleType.transform() = VoteAbleStatus(this)
+
+fun VoteAbleStatus.transform() = this.status
