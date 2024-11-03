@@ -70,8 +70,8 @@ class SummaryAgendaDTOTest {
         val voteNo = quantity - voteYes
         val obj = buildAgenda(votes = buildVotes(quantity = quantity)).toSummary()
 
-        assertEquals(voteYes, obj.summary[VoteType.YES])
-        assertEquals(voteNo, obj.summary[VoteType.NO])
-        assertNull(obj.summary[VoteType.NOT_SELECTED])
+        assertEquals(voteYes, obj.summary[VoteType.YES.description])
+        assertEquals(voteNo, obj.summary[VoteType.NO.description])
+        assertNull(obj.summary[VoteType.NOT_SELECTED.description])
     }
 }

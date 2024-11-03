@@ -9,10 +9,6 @@ Isrc/main/kotlin/br/com/cooperativa/votacao/repository/AgendaRepository.kt,7/6/
 build.gradle.kts,d/b/dbcff70658daf80b53ce624f6adcaa529df5ed8d
 ~
 Nsrc/test/kotlin/br/com/cooperativa/votacao/domain/persist/AgendaPersistTest.kt,0/7/07a1e106904dc138e2f3f14b9e8cd18b74f91734
-v
-Fsrc/test/kotlin/br/com/cooperativa/votacao/domain/dto/AgendaDTOTest.kt,4/2/427877a3250bd7e2e219325215c3e77c84bfedea
-}
-Msrc/test/kotlin/br/com/cooperativa/votacao/domain/dto/SummaryAgendaDTOTest.kt,2/a/2adebedfb46d0b6c35e21b3f4030d3f8330fb501
 w
 Gsrc/test/kotlin/br/com/cooperativa/votacao/service/AgendaServiceTest.kt,f/e/fee0399923bc46516447edec8cfa919f782f75d5
 w
@@ -42,12 +38,6 @@ q
 Asrc/main/kotlin/br/com/cooperativa/votacao/domain/dto/VoteType.kt,6/8/6890d33810413e49e81950bb64b6c4c56bc993d3
 u
 Esrc/test/kotlin/br/com/cooperativa/votacao/domain/dto/VoteTypeTest.kt,9/d/9d49f80fdb99d2941607deda4258df29c1759552
-l
-<src/main/kotlin/br/com/cooperativa/votacao/mapper/Mappers.kt,a/9/a9e885fa814fc0fb04efc9d2632a47d163e384c1
-
-Osrc/test/kotlin/br/com/cooperativa/votacao/exception/ValidationExceptionTest.kt,c/1/c1d9c4567c9ee6c7d2c52bd2d6b9c8e4c7cd92fc
-y
-Isrc/main/kotlin/br/com/cooperativa/votacao/domain/dto/SummaryAgendaDTO.kt,0/7/070446cb30eade5f087dc520a6355bf4d9cc6141
 x
 Hsrc/main/kotlin/br/com/cooperativa/votacao/domain/persist/VotePersist.kt,6/c/6c0a4e5a049c34ac7843968d0790a901cb2640ca
 p
@@ -74,12 +64,8 @@ n
 >src/main/kotlin/br/com/cooperativa/votacao/mapper/Constants.kt,4/f/4f4263e4c7c3f981c6035bec02b87981647b8d11
 B
 docker-compose.yml,3/5/35b8c13cf2eb2a194eada000eb310d65aed53b2a
-r
-Bsrc/main/kotlin/br/com/cooperativa/votacao/domain/dto/AgendaDTO.kt,1/8/188ef98947fc470a27f4cd15e5cfb2b2a7b52df0
 o
 ?src/test/kotlin/br/com/cooperativa/votacao/utils/BuilderTest.kt,5/c/5c2c87f8695e5dbd4e9d5b9ab359d369ec1f694d
-z
-Jsrc/main/kotlin/br/com/cooperativa/votacao/domain/persist/AgendaPersist.kt,0/3/03d372752d61eb399a03c7ca5fc266974d6f94af
 r
 Bsrc/test/kotlin/br/com/cooperativa/votacao/client/CpfClientTest.kt,9/c/9cac995d23d1a4dbc41a6fd5a9dbecae39fdca10
 o

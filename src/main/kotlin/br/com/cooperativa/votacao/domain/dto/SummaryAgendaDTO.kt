@@ -10,7 +10,7 @@ class SummaryAgendaDTO(
     description: String = "",
     begin: LocalDateTime = now(),
     val end: LocalDateTime = now(),
-    val summary: Map<VoteType, Long> = emptyMap()
+    val summary: Map<String, Long> = emptyMap()
 ) : AgendaDTO(
     id = id,
     topic = topic,

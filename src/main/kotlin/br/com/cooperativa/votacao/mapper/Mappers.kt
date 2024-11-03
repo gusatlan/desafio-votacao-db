@@ -25,7 +25,7 @@ fun AgendaPersist.toSummary(): SummaryAgendaDTO {
         description = this.description,
         begin = this.begin,
         end = this.end,
-        summary = this.summary
+        summary = this.summary.mapKeys { it.key.description }
     )
 }
 
