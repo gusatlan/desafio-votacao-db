@@ -90,8 +90,6 @@ n
 >src/main/kotlin/br/com/cooperativa/votacao/util/KafkaMapper.kt,4/7/47c52d082c025e4af69680f0be1381ec85d5618b
 l
 <src/main/kotlin/br/com/cooperativa/votacao/util/DateUtils.kt,4/2/42c879aac47b9ce7352e3f182d559f87e6d823fe
-y
-Isrc/main/kotlin/br/com/cooperativa/votacao/controller/AgendaController.kt,1/3/135c6a6b55b12c2cc9ba2be3aaae90f5c81935b3
 w
 Gsrc/main/kotlin/br/com/cooperativa/votacao/controller/VoteController.kt,1/e/1ef942893fa4a14eca68c22e17a633820f280492
 n
@@ -100,11 +98,7 @@ n
 CHANGELOG.md,a/b/ab09011fa121d0a2bb9fa4ca76094f2482b902b7
 9
 	README.md,8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-s
-Csrc/main/kotlin/br/com/cooperativa/votacao/service/AgendaService.kt,f/1/f17771d91571e0098c5a9b21136ca11c8694c4ed
 q
 Asrc/main/kotlin/br/com/cooperativa/votacao/service/VoteService.kt,4/3/433038e6fac8583195fa434d17f6acc43ab543df
 u
 Esrc/test/kotlin/br/com/cooperativa/votacao/service/VoteServiceTest.kt,8/f/8f3668e0de0898304c3c23e1e48190a74a47af12
-i
-9src/main/kotlin/br/com/cooperativa/votacao/Application.kt,e/5/e5df6e62ebad25a0a9fa980f610ad8abefa84168

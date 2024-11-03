@@ -49,7 +49,7 @@ class AgendaService(
         value: AgendaPersist
     ): Boolean {
         return listOf(
-            id.isNullOrEmpty() || id.equals(value.id, ignoreCase = true),
+            id.isNullOrEmpty() || id.trim().equals(value.id, ignoreCase = true),
             topic.isNullOrEmpty() || value.topic.trim().lowercase().contains(topic.trim().lowercase()),
             description.isNullOrEmpty() || value.description.trim().lowercase()
                 .contains(description.trim().lowercase()),
@@ -67,13 +67,13 @@ class AgendaService(
         logger.info("[AgendaService][find][BEGIN] [$id, $topic, $description]")
 
         val items = if (!id.isNullOrEmpty()) {
-            repository.findById(id).toFlux()
+            repository.findById(cleanCodeText(id)).toFlux()
         } else if (!topic.isNullOrEmpty()) {
-            repository.findByTopicContainsIgnoreCase(topic)
+            repository.findByTopicContainsIgnoreCase(topic.trim())
         } else if (!description.isNullOrEmpty()) {
-            repository.findByDescriptionContainsIgnoreCase(description)
+            repository.findByDescriptionContainsIgnoreCase(description.trim())
         } else {
-            Flux.empty()
+            repository.findAll()
         }
 
         return items
