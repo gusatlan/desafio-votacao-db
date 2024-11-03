@@ -12,3 +12,30 @@ services:
       DB_PORT: "27017"
       DB_AUTH_NAME: "votacao"
       DB_NAME: "votacao"
+    restart: unless-stopped
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:4.4.6
+    ports:
+      - "27017-27019:27017-27019"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Ora1626X
+    volumes:
+      - "mongodb_data:/data/db"
+    restart: unless-stopped
+  mongo-express:
+    image: mongo-express
+    depends_on:
+      - mongo
+    ports:
+      - "8085:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: Ora1626X
+      ME_CONFIG_MONGODB_SERVER: mongo
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:

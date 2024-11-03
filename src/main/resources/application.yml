@@ -16,6 +16,7 @@ spring:
   data:
     mongodb:
       uri: "mongodb://${DB_USER:root}:${DB_PASSWORD:Ora1626X}@${DB_HOST:mongo.redent}:${DB_PORT:27017}"
+#      uri: "mongodb://${DB_USER:root}:${DB_PASSWORD:Ora1626X}@${DB_HOST:mongo}:${DB_PORT:27017},${DB_HOST:mongo}:27018,${DB_HOST:mongo}:27019/${DB_NAME:votacao}?authSource=admin&replicaSet=rs0&readPreference=secondaryPreferred"
       authentication-database: "${DB_AUTH_NAME:votacao}"
       database: "${DB_NAME:votacao}"
       auto-index-creation: true
@@ -33,4 +34,4 @@ spring:
       acks: all
     admin:
       properties:
-        replication.factor: 1
+        topic.replication.factor: 1

@@ -187,6 +187,7 @@ Os endpoints são reativos, utilizando o WebFlux, a interface com o Mongo també
 * No endpoint POST de votos **/agenda** não foi usado o *@Valid* pois era necessário realizar a validação de CPF via chamada externa (simulada pelo **/cpf/{cpf}**), foi realizada a chamada do bean validation de forma programática;
 * Os endpoints podem lançar as devidas exceções, conforme as validações e regras de negócio;
 * O payload de resposta do endpoint **/cpf**, poderia retornar apenas 1 (ABLE_TO_VOTE) e 0 (UNABLE_TO_VOTE), economizando tráfego de rede e dimunuindo os custos com o provedor de nuvem
+* Subi apenas 1 instância do MongoDB, em application.yml -> spring.data.mongodb.uri comentado, tem um exemplo de utilização de cluster
 
 
 Quanto ao versionamento, em relação aos endpoints, só seria necessário se houvesse uma quebra de contrato (modificação substancial nos payload). Nesse caso poderia ser colocado a versão no endpoint: **/agenda/v2/**, mantendo o endpoint original como estava.
